@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import Link from 'next/link';
+import Loading from './ui/Loading';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -43,13 +44,17 @@ const Feed = () => {
       />
 
       {/* =========blog posts=========== */}
-      <div className="mt-8 space-y-6 py-8 sm:columns-2 sm:gap-6 xl:columns-3">
-        {filteredPost.map((post) => (
-          <Link key={post._id} href={`/posts/${post._id}`}>
-            <PostCard post={post} />
-          </Link>
-        ))}
-      </div>
+      {posts.length > 0 ? (
+        <div className="mt-8 space-y-6 py-8 sm:columns-2 sm:gap-6 xl:columns-3">
+          {filteredPost.map((post) => (
+            <Link key={post._id} href={`/posts/${post._id}`}>
+              <PostCard post={post} />
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <Loading />
+      )}
     </section>
   );
 };
