@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import Link from 'next/link';
 import Loading from './ui/Loading';
+import Tags from './Tags';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
   const [filteredPost, setFilteredPost] = useState(posts);
 
   useEffect(() => {
@@ -22,6 +24,10 @@ const Feed = () => {
     setSearchText(searchInput);
   };
 
+  const handleTag = (title) => {
+    setSelectedTag(title);
+  };
+
   useEffect(() => {
     const searchedPost = posts.filter((post) => post.title.toLowerCase().includes(searchText.toLowerCase()));
     if (searchedPost) {
@@ -29,7 +35,16 @@ const Feed = () => {
     } else {
       setFilteredPost(posts);
     }
-  }, [searchText, posts]);
+
+    const taggedPosts = posts.filter((post) => post.tags.includes(selectedTag));
+    if (taggedPosts.length > 1) {
+      setFilteredPost(taggedPosts);
+    } else {
+      setFilteredPost(posts);
+    }
+
+    console.log(taggedPosts);
+  }, [searchText, posts, selectedTag]);
 
   return (
     <section className="mt-10 mx-auto w-full max-w-xl flex justify-center items-center flex-col gap-2">
@@ -42,6 +57,8 @@ const Feed = () => {
         onChange={handleSearch}
         className="block w-full rounded-md border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-lg shadow-lg font-medium focus:border-rose-500 focus:outline-none focus:ring-0"
       />
+
+      <Tags handleTag={handleTag} />
 
       {/* =========blog posts=========== */}
       {posts.length > 0 ? (

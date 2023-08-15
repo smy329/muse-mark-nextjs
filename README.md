@@ -29,3 +29,4 @@ Live Link: https://muse-mark.vercel.app/
 - Search blog post functionality has been added
 - MongoDB has been used as NoSql Database
 - Mongoose has been used as ODM
+- Filters with tags are added
